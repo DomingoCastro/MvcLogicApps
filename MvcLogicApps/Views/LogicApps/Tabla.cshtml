@@ -1,0 +1,23 @@
+﻿@model List<Tabla>
+
+<h1>Tabla de multiplicar</h1>
+
+<form method="post">
+    <label>Ingresa numero</label>
+    <input type="number" name="num" class="form-control" required />
+    <button class="btn btn-success">
+        Multiplicar
+    </button>
+</form>
+
+@if (Model !=null){
+
+    <ul class="list-group">
+        @foreach (Tabla tabla in Model)
+        {
+            <li class="list-group-item">
+                @tabla.Resultado
+            </li>
+        }
+    </ul>
+}

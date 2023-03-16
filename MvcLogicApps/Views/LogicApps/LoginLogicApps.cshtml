@@ -1,0 +1,22 @@
+﻿<h1> Login Flow Logic Apps</h1>
+
+
+
+<form method="post">
+    <label>Username: </label>
+    <input type="text" name="username" class="form-control" required />
+    <label>Password:</label>
+    <input type="text" name="password" class="form-control" required />
+    <button class="btn btn-outline-success">
+        Login
+    </button>
+</form>
+@if (ViewData["TOKEN"] != null)
+{
+<label>Resultado</label>
+    <textarea class="form-control">@ViewData["TOKEN"]</textarea>
+}
+else
+{
+    @ViewData["MENSAJE"]
+}
