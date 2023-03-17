@@ -5,6 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<ServiceLogicApps>();
+builder.Services.AddTransient<ServiceApiEmpleados>();
+builder.Services.AddSession(options => 
+{
+    options.IOTimeout = TimeSpan.FromMinutes(20);
+}
+);
 
 var app = builder.Build();
 
@@ -22,7 +28,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

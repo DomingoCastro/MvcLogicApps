@@ -66,8 +66,39 @@ namespace MvcLogicApps.Controllers
             else
             {
                 ViewData["TOKEN"] = token;
+                //ALMACENAMOS EN SESSION NUESTRO TOKEN
+                HttpContext.Session.SetString("TOKEN", token);
             }
             return View();
+        }
+
+        public async Task<IActionResult> PerfilEmpleado()
+        {
+            string token = HttpContext.Session.GetString("TOKEN");
+            if (token == null)
+            {
+                //El usuario no se a validado
+                return RedirectToAction("LoginLogicApps");
+            }
+            else
+            {
+                //LLAMAMOS AL FLOW Y AL PERFIL DEL EMPLEADO
+                Empleado empleado = await this.service.GetEmpleadoAsycn(token);
+                return View(empleado);
+            }
+        }
+        public async Task<IActionResult> Compis()
+        {
+            string token = HttpContext.Session.GetString("TOKEN");
+            if(token == null)
+            {
+                return RedirectToAction("LoginLogicApps");
+            }
+            else
+            {
+                List<Empleado> compis = await this.service.GetCompisAsync(token);
+                return View(compis);
+            }
         }
     }
 }

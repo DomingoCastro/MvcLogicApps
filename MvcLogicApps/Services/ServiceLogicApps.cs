@@ -130,5 +130,49 @@ namespace MvcLogicApps.Services
                 }
             }
         }
+        public async Task<Empleado> GetEmpleadoAsycn(string token)
+        {
+            string urlFlow = "https://prod-145.westeurope.logic.azure.com:443/workflows/fa2638d70feb487ab04401554c0a34d4/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=_pt4zu-Ns2HO1PGj3t-rYbb5-boJKQBZSFADGchCnuA";
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(this.Header);
+                var model = new { token = token };
+                var json = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(json,Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(urlFlow, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    Empleado empleado = await response.Content.ReadAsAsync<Empleado>();
+                    return empleado;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        public async Task<List<Empleado>> GetCompisAsync(string token)
+        {
+            string urlFlow = "https://prod-73.westeurope.logic.azure.com:443/workflows/9637bbe9b5fd4a06b491374f68136fe2/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=gL13R1m-lvvLi8xCcHGuJvMfms1h9WObMHBnanHBrTg";
+            using (HttpClient client = new HttpClient())
+            {
+                var model = new { token = token };
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(this.Header);
+                var json = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(json,Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(urlFlow, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    List<Empleado> compis = await response.Content.ReadAsAsync<List<Empleado>>();
+                    return compis;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     }
 }
